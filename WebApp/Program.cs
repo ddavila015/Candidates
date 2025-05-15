@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICandidateData, CandidateData>();
 builder.Services.AddScoped<ICandidateDomain, CandidateDomain>();
 builder.Services.AddScoped<ResponseDto>();
+builder.Services.AddScoped<List<CandidateDto>>();
 
 
 // Add services to the container.

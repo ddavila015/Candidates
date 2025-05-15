@@ -20,5 +20,13 @@ namespace DataAccess.DataInterface
         int RegisterCandidate(Candidates model, List<Candidateexperiences> exp);
 
         bool DeleteCandidate(int idCandidate);
+
+        int EditCandidate(Candidates model, List<Candidateexperiences> exp);
+
+        void EditCandidateExperiences(int IdCandidate, List<Candidateexperiences> exp);
+
+        void SaveCandidateExperiences(int IdCandidate, List<Candidateexperiences> exp);
+
+        bool ValidateRegisteredEmail(string email);
     }
 }

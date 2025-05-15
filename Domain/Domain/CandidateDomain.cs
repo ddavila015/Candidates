@@ -15,17 +15,42 @@ namespace Domain
     {
         private readonly ICandidateData _candidateData;
         private readonly ResponseDto _ResponseDto;
+        private readonly List<CandidateDto> _ListCandidateDto;
+        
 
-        public CandidateDomain(ICandidateData candidateData, ResponseDto responseDto) 
+
+        public CandidateDomain(ICandidateData candidateData, ResponseDto responseDto, List<CandidateDto> listCandidateDto) 
         {
             _candidateData = candidateData;
             _ResponseDto = responseDto;
+            _ListCandidateDto = listCandidateDto;
         }
 
        public ResponseDto RegisterCandidate(Candidates model, List<Candidateexperiences> exp)
-       { 
+       {
+            //VALIDAMOS QUE EL E-MAIL ESTE REGISTRADO
+            var result = _candidateData.ValidateRegisteredEmail(model.Email);
+            if (result)
+            {
+                _ResponseDto.Mensaje = "EL EMAIL YA SE ENCUENTRA REGISTRADO.";
+                _ResponseDto.Codigo = 0;
+                return _ResponseDto;
+            }
+
+
+            //SETEAMOS EL OBJECTO CANDIDATO
+            var newCandidate = new Candidates
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                Birthdate = model.Birthdate,
+                Email = model.Email,
+                InsertDate = DateTime.Now,
+                ModifyDate = DateTime.Now
+            };
+
             //REGISTRAMOS EL CANDIDATO
-            var response = _candidateData.RegisterCandidate(model, exp);
+            var response = _candidateData.RegisterCandidate(newCandidate, exp);
             if (response > 0)
             {
                 _ResponseDto.Mensaje = "REGISTRADO EXITOSAMENTE.";
@@ -57,10 +82,8 @@ namespace Domain
             return _ResponseDto;
         }
 
-        public List<CandidateDto> GetAllCandidates()
-       {
-            List<CandidateDto> ListCandidates = new List<CandidateDto>();    
-
+       public List<CandidateDto> GetAllCandidates()
+       { 
             //CONSULTAR TODOS LOS CANDIDATOS
             var _candidates = _candidateData.GetAllCandidates();              
             foreach (var itemCandidate in _candidates)
@@ -102,10 +125,56 @@ namespace Domain
                 };
 
                 //AGREGAMOS LOS CANDIDATOS
-                ListCandidates.Add(NewCandidate);
+                _ListCandidateDto.Add(NewCandidate);
             }
         
-            return ListCandidates;
+            return _ListCandidateDto;
        }
+
+        public ResponseDto EditCandidate(Candidates model, List<Candidateexperiences> exp)
+        {
+            //CONSULTAR SI EXISTE EL CANDIDATO
+            var candidate = _candidateData.GetCandidateById(model.IdCandidate);
+            if (candidate == null)
+            {
+                _ResponseDto.Mensaje = "NO SE ENCONTRÓ EL CANDIDATO.";
+                _ResponseDto.Codigo = 0;
+                return _ResponseDto;
+            }
+
+            //VALIDAR QUE EL EMAIL ESTE REGISTRADO
+            if (model.Email != candidate.Email) 
+            {
+                var result = _candidateData.ValidateRegisteredEmail(model.Email);
+                if (result) 
+                {
+                    _ResponseDto.Mensaje = "EL E-MAIL YA SE ENCUENTRA REGISTRADO.";
+                    _ResponseDto.Codigo = 0;
+                    return _ResponseDto;
+                }
+            }
+
+            //SETEAMOS EL OBJECTO CANDIDATO
+            candidate.Name = model.Name;
+            candidate.Surname = model.Surname;
+            candidate.Birthdate = model.Birthdate;
+            candidate.Email = model.Email;
+            candidate.ModifyDate = DateTime.Now;
+
+            //REGISTRAMOS EL CANDIDATO
+            var response = _candidateData.EditCandidate(candidate, exp);
+            if (response > 0)
+            {
+                _ResponseDto.Mensaje = "ACTUALIZADO EXITOSAMENTE.";
+                _ResponseDto.Codigo = 200;
+            }
+            else
+            {
+                _ResponseDto.Mensaje = "ERROR AL ACTUALIZAR CANDIDATO.";
+                _ResponseDto.Codigo = 0;
+            }
+
+            return _ResponseDto;
+        }
     }
 }
