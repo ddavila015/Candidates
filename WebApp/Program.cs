@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 //DEPENDENCIAS
+
 builder.Services.AddScoped<ICandidateData, CandidateData>();
 builder.Services.AddScoped<ICandidateDomain, CandidateDomain>();
 builder.Services.AddScoped<ResponseDto>();
 builder.Services.AddScoped<List<CandidateDto>>();
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,8 +21,8 @@ builder.Services.AddDbContext<CandidateContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CandidateConnection"));
 });
-
- var app = builder.Build();
+ 
+var app = builder.Build();
 
 //DESCOMENTAR ANTES DE ENVIAR
 //using (var scope = app.Services.CreateScope())

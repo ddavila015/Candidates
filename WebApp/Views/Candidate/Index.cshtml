@@ -2,7 +2,52 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">WELCOME</h1>
-    <p>Administrar base de datos de candidatos</p>
+<div class="container-fluid">   
+    <div class="text-center">
+        <h1 class="display-4">WELCOME</h1>
+        <p>Administrar base de datos de candidatos</p>
+    </div>
+
+
+    <table class="table table-bordered table-striped table-primary">
+        <thead>
+            <tr>               
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>FechaNacimiento</th>
+                <th>Email</th>
+                <th>FechaRegistro</th>
+                <th>ÚltimaModificación</th>
+                <th>Experiencias</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var candidate in @ViewBag.ListCandidate)
+            {
+                <tr>                  
+                    <td>@candidate.Name</td>
+                    <td>@candidate.Surname</td>
+                    <td>@candidate.Birthdate.ToString("dd/MM/yyyy")</td>
+                    <td>@candidate.Email</td>
+                    <td>@candidate.InsertDate.ToString("dd/MM/yyyy")</td>
+                    <td>@candidate.ModifyDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a href="@Url.Action("Experience", "Candidate", new { id = candidate.IdCandidate })"
+                           class="btn btn-info btn-sm">Experiencia</a>
+                    </td>                  
+                    <td>                        
+                        <a href="@Url.Action("Edit", "Candidate", new { id = candidate.IdCandidate })"
+                           class="btn btn-primary btn-sm">Editar</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete", "Candidate", new { id = candidate.IdCandidate })"
+                           class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

@@ -20,7 +20,7 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         { 
-            var candidates = _CandidateDomain.GetAllCandidates();
+            ViewBag.ListCandidate = _CandidateDomain.GetAllCandidates();
             return View();
         }
 
