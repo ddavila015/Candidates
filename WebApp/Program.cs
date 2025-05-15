@@ -1,9 +1,21 @@
+using DataAccess;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<CandidateContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CandidateConnection"));
+});
 
-var app = builder.Build();
+ var app = builder.Build();
+using (var scope = app.Services.CreateScope()) 
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<CandidateContext>();
+    dataContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
