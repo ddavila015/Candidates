@@ -34,20 +34,70 @@
                     <td>@candidate.InsertDate.ToString("dd/MM/yyyy")</td>
                     <td>@candidate.ModifyDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <a href="@Url.Action("Experience", "Candidate", new { id = candidate.IdCandidate })"
-                           class="btn btn-info btn-sm">Experiencia</a>
+                        @if(candidate.Experiencias.Count > 0){
+                        
+                            <button class="btn btn-info btn-sm" onclick="toggleExperience(@candidate.IdCandidate)">
+                                Experiencia
+                            </button>
+                        }
                     </td>                  
                     <td>                        
                         <a href="@Url.Action("Edit", "Candidate", new { id = candidate.IdCandidate })"
-                           class="btn btn-primary btn-sm">Editar</a>
+                        class="btn btn-primary btn-sm">Editar</a>
                     </td>
                     <td>
                         <a href="@Url.Action("Delete", "Candidate", new { id = candidate.IdCandidate })"
-                           class="btn btn-danger btn-sm">Eliminar</a>
+                        class="btn btn-danger btn-sm">Eliminar</a>
                     </td>
 
                 </tr>
+
+                @if (candidate.Experiencias.Count > 0)
+                {
+                    <tr class="SubTable-@candidate.IdCandidate" style="display: none;">
+                        <td colspan="6">
+                            <table class="table table-bordered table-warning table-sm">
+                                <thead class="table-warning">
+                                    <tr>
+                                        <th>Compañia</th>
+                                        <th>Puesto</th>
+                                        <th>Descripción</th>
+                                        <th>Salario</th>
+                                        <th>FechaInicio</th>
+                                        <th>FechaFin</th>                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var exp in @candidate.Experiencias)
+                                    {
+                                        <tr>
+                                            <td>@exp.Company</td>
+                                            <td>@exp.Job</td>
+                                            <td>@exp.Description</td>
+                                            <td>@exp.Salary</td>
+                                            <td>@exp.BeginDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@exp.EndDate.ToString("dd/MM/yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }                  
             }
         </tbody>
     </table>
 </div>
+
+<script>      
+    function toggleExperience(id) {
+        var subTable = document.querySelector(".SubTable-" + id);
+        if (subTable.style.display === "none") {
+            subTable.style.display = "table-row";
+        } else {
+            subTable.style.display = "none";
+        }
+    }
+</script>
+
+
