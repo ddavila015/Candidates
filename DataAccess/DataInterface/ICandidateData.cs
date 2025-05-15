@@ -18,5 +18,7 @@ namespace DataAccess.DataInterface
         List<Candidateexperiences> GetAllCandidateExperiencesByIdCandidate(int idCandidate);
 
         int RegisterCandidate(Candidates model, List<Candidateexperiences> exp);
+
+        bool DeleteCandidate(int idCandidate);
     }
 }

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using DataAccess.Entities;
 using Domain.DomainInterface;
+using DTO;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 
@@ -45,6 +46,12 @@ namespace WebApp.Controllers
             return View();
         }
 
+        public IActionResult Delete(int idCandidate)
+        {
+            var response = _CandidateDomain.DeleteCandidate(idCandidate);
+            return View();
+        }
+         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

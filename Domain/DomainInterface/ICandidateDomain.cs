@@ -13,5 +13,7 @@ namespace Domain.DomainInterface
         ResponseDto RegisterCandidate(Candidates model, List<Candidateexperiences> exp);
 
         List<CandidateDto> GetAllCandidates();
+
+        ResponseDto DeleteCandidate(int idCandidate);
     }
 }

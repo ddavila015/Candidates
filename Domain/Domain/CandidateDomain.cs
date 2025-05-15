@@ -40,7 +40,24 @@ namespace Domain
             return _ResponseDto;
        }
 
-       public List<CandidateDto> GetAllCandidates()
+        public ResponseDto DeleteCandidate(int idCandidate)
+        {           
+            var response = _candidateData.DeleteCandidate(idCandidate);
+            if (response == true)
+            {
+                _ResponseDto.Mensaje = "BORRADO EXITOSAMENTE.";
+                _ResponseDto.Codigo = 200;
+            }
+            else 
+            {
+                _ResponseDto.Mensaje = "ERROR AL BORRAR EL CANDIDATO.";
+                _ResponseDto.Codigo = 0;
+            } 
+
+            return _ResponseDto;
+        }
+
+        public List<CandidateDto> GetAllCandidates()
        {
             List<CandidateDto> ListCandidates = new List<CandidateDto>();    
 

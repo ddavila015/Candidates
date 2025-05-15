@@ -109,6 +109,32 @@ namespace DataAccess.Data
             }
 
             return Response;
-        }        
+        }
+
+        public bool DeleteCandidate(int idCandidate)
+        {
+            using (var context = new CandidateContext(_options))
+            {
+                //CONSULTAMOS EL CANDIDATO
+                var candidate = GetCandidateById(idCandidate);
+
+                if (candidate == null)
+                    return false;
+                else{
+                    //CONSULTAMOS LAS EXPERIENCIAS
+                    var _experiencias = GetAllCandidateExperiencesByIdCandidate(idCandidate);
+                    foreach (var item in _experiencias) 
+                    {
+                        context.Candidateexperiences.Remove(item);
+                        context.SaveChangesAsync();
+                    }
+
+                    context.Candidates.Remove(candidate);
+                    context.SaveChangesAsync();
+                    // RETORNAMOS VERDADERO SI FUE EXITOSO EL BORRADO
+                    return true;
+                }              
+            }
+        }
     }
 }
