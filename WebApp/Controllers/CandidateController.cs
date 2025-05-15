@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using DataAccess.Entities;
 using Domain.DomainInterface;
 using DTO;
@@ -17,14 +18,15 @@ namespace WebApp.Controllers
             _logger = logger;
             _CandidateDomain = candidateDomain;
         }
-
-        public IActionResult Index()
-        { 
+         
+        public IActionResult Index(string Mensaje, int Codigo)
+        {
+            ViewBag.Mensaje = string.IsNullOrWhiteSpace(Mensaje) ? null : Mensaje;
+            ViewBag.Codigo = Codigo;
             ViewBag.ListCandidate = _CandidateDomain.GetAllCandidates();
             return View();
         }
-
-
+          
         public IActionResult Create()
         {
             var newCandidate = new Candidates { Name = "Juan", Surname = "Pérez", Birthdate = new DateTime(1990, 5, 20), Email = "perez32@email.com", InsertDate = DateTime.Now, ModifyDate = DateTime.Now };
@@ -48,12 +50,12 @@ namespace WebApp.Controllers
         }
 
 
-        public IActionResult Delete(int idCandidate)
+        public IActionResult Delete(int id)
         {
-            var response = _CandidateDomain.DeleteCandidate(idCandidate);
-            return View();
+            var response = _CandidateDomain.DeleteCandidate(id);            
+            return RedirectToAction("Index", new { Mensaje = response.Mensaje, Codigo = response.Codigo });            
         }
-
+         
         public IActionResult Edit()
         {
             var newCandidate = new Candidates { Name = "Juan", Surname = "Pérez", Birthdate = new DateTime(1990, 5, 20), Email = "perez32@email.com", InsertDate = DateTime.Now, ModifyDate = DateTime.Now };

@@ -79,12 +79,12 @@ namespace DataAccess.Data
                 {
                     //ELIMINAMOS LAS EXPERIENCIAS
                     context.Candidateexperiences.Remove(item);
-                    context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 //ELIMINAMOS EL CANDIDATO
                 context.Candidates.Remove(candidate);
-                context.SaveChangesAsync();
+                context.SaveChanges();
                 // RETORNAMOS VERDADERO SI FUE EXITOSO EL BORRADO
                 return true;
             }                          

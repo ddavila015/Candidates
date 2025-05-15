@@ -76,7 +76,7 @@ namespace Domain
             else 
             {
                 _ResponseDto.Mensaje = "ERROR AL BORRAR EL CANDIDATO.";
-                _ResponseDto.Codigo = 0;
+                _ResponseDto.Codigo = 500;
             } 
 
             return _ResponseDto;

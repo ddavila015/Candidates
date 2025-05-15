@@ -3,6 +3,20 @@
 }
 
 <div class="container-fluid">   
+    @if (ViewBag.Codigo == 200)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+    @if (ViewBag.Codigo == 500)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Mensaje
+        </div>
+    }
+
     <div class="text-center">
         <h1 class="display-4">WELCOME</h1>
         <p>Administrar base de datos de candidatos</p>
@@ -24,66 +38,75 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var candidate in @ViewBag.ListCandidate)
+            @if (ViewBag.ListCandidate.Count > 0)
             {
-                <tr>                  
-                    <td>@candidate.Name</td>
-                    <td>@candidate.Surname</td>
-                    <td>@candidate.Birthdate.ToString("dd/MM/yyyy")</td>
-                    <td>@candidate.Email</td>
-                    <td>@candidate.InsertDate.ToString("dd/MM/yyyy")</td>
-                    <td>@candidate.ModifyDate.ToString("dd/MM/yyyy")</td>
-                    <td>
-                        @if(candidate.Experiencias.Count > 0){
-                        
-                            <button class="btn btn-info btn-sm" onclick="toggleExperience(@candidate.IdCandidate)">
-                                Experiencia
-                            </button>
-                        }
-                    </td>                  
-                    <td>                        
-                        <a href="@Url.Action("Edit", "Candidate", new { id = candidate.IdCandidate })"
-                        class="btn btn-primary btn-sm">Editar</a>
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Delete", "Candidate", new { id = candidate.IdCandidate })"
-                        class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>
 
-                </tr>
-
-                @if (candidate.Experiencias.Count > 0)
+                foreach (var candidate in @ViewBag.ListCandidate)
                 {
-                    <tr class="SubTable-@candidate.IdCandidate" style="display: none;">
-                        <td colspan="6">
-                            <table class="table table-bordered table-warning table-sm">
-                                <thead class="table-warning">
-                                    <tr>
-                                        <th>Compañia</th>
-                                        <th>Puesto</th>
-                                        <th>Descripción</th>
-                                        <th>Salario</th>
-                                        <th>FechaInicio</th>
-                                        <th>FechaFin</th>                                     
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var exp in @candidate.Experiencias)
-                                    {
-                                        <tr>
-                                            <td>@exp.Company</td>
-                                            <td>@exp.Job</td>
-                                            <td>@exp.Description</td>
-                                            <td>@exp.Salary</td>
-                                            <td>@exp.BeginDate.ToString("dd/MM/yyyy")</td>
-                                            <td>@exp.EndDate.ToString("dd/MM/yyyy")</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                    <tr>                  
+                        <td>@candidate.Name</td>
+                        <td>@candidate.Surname</td>
+                        <td>@candidate.Birthdate.ToString("dd/MM/yyyy")</td>
+                        <td>@candidate.Email</td>
+                        <td>@candidate.InsertDate.ToString("dd/MM/yyyy")</td>
+                        <td>@candidate.ModifyDate.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @if(candidate.Experiencias.Count > 0){
+
+                                <button class="btn btn-info btn-sm" onclick="toggleExperience(@candidate.IdCandidate)">
+                                    Experiencia
+                                </button>
+                            }
+                        </td>                  
+                        <td>                        
+                            <a href="@Url.Action("Edit", "Candidate", new { id = candidate.IdCandidate })"
+                            class="btn btn-primary btn-sm">Editar</a>
                         </td>
+                        <td>
+                            <a href="@Url.Action("Delete", "Candidate", new { id = candidate.IdCandidate })"
+                            class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+
                     </tr>
-                }                  
+
+                    @if (candidate.Experiencias.Count > 0)
+                    {
+                        <tr class="SubTable-@candidate.IdCandidate" style="display: none;">
+                            <td colspan="6">
+                                <table class="table table-bordered table-warning table-sm">
+                                    <thead class="table-warning">
+                                        <tr>
+                                            <th>Compañia</th>
+                                            <th>Puesto</th>
+                                            <th>Descripción</th>
+                                            <th>Salario</th>
+                                            <th>FechaInicio</th>
+                                            <th>FechaFin</th>                                     
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var exp in @candidate.Experiencias)
+                                        {
+                                            <tr>
+                                                <td>@exp.Company</td>
+                                                <td>@exp.Job</td>
+                                                <td>@exp.Description</td>
+                                                <td>@exp.Salary</td>
+                                                <td>@exp.BeginDate.ToString("dd/MM/yyyy")</td>
+                                                <td>@exp.EndDate.ToString("dd/MM/yyyy")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                }
+            }else
+            {
+                  <tr>
+                    <td colspan="9">No se encontraron registros</td>
+                  </tr>
             }
         </tbody>
     </table>
