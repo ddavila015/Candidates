@@ -7,12 +7,12 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
-    public class HomeController : Controller
+    public class CandidateController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<CandidateController> _logger;
         private readonly ICandidateDomain _CandidateDomain;
 
-        public HomeController(ILogger<HomeController> logger, ICandidateDomain candidateDomain)
+        public CandidateController(ILogger<CandidateController> logger, ICandidateDomain candidateDomain)
         {
             _logger = logger;
             _CandidateDomain = candidateDomain;
