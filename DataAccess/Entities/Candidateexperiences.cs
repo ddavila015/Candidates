@@ -14,14 +14,32 @@ namespace DataAccess.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdCandidateExperience { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string Company { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string Job { get; set; }
+
+        [Required]
+        [StringLength(4000)]
         public string Description { get; set; }
+
+        [Required]
+        [Column(TypeName = "decimal(8,2)")]
         public decimal Salary { get; set; }
+
+        [Required]
         public DateTime BeginDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        [Required]
         public DateTime InsertDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+
+        public DateTime? ModifyDate { get; set; }
+
         public int IdCandidate { get; set; }
 
         [ForeignKey("IdCandidate")]
