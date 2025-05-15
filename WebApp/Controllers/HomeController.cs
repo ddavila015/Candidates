@@ -18,15 +18,21 @@ namespace WebApp.Controllers
         }
 
         public IActionResult Index()
+        { 
+            var candidates = _CandidateDomain.GetAllCandidates();
+            return View();
+        }
+
+        public IActionResult Create()
         {
-           
-            var newCandidate = new Candidates { Name = "Juan", Surname = "Pérez", Birthdate = new DateTime(1990, 5, 20), Email = "juan.perez@email.com", InsertDate = DateTime.Now, ModifyDate = DateTime.Now };
+            var newCandidate = new Candidates { Name = "Juan", Surname = "Pérez", Birthdate = new DateTime(1990, 5, 20), Email = "perez32@email.com", InsertDate = DateTime.Now, ModifyDate = DateTime.Now };
 
             List<Candidateexperiences> exp = new List<Candidateexperiences>();
-            var candidateexperiences = new Candidateexperiences {
+            var candidateexperiences = new Candidateexperiences
+            {
                 Company = "Tech Solutions",
                 Job = "Software Engineer",
-                Description =  "Desarrollo de aplicaciones web",
+                Description = "Desarrollo de aplicaciones web",
                 Salary = 5000,
                 BeginDate = Convert.ToDateTime("2022-01-15T00:00:00"),
                 EndDate = Convert.ToDateTime("2023-01-15T00:00:00")
@@ -34,14 +40,8 @@ namespace WebApp.Controllers
 
             exp.Add(candidateexperiences);
 
+            var response = _CandidateDomain.RegisterCandidate(newCandidate, exp);
 
-
-            _CandidateDomain.RegisterCandidate(newCandidate, exp);
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 

@@ -18,8 +18,49 @@ namespace DataAccess.Data
             _options = options;
         }
 
-        public void RegisterCandidate(Candidates model, List<Candidateexperiences> exp) 
+        public Candidates? GetCandidateById(int idCandidate)
         {
+            using (var context = new CandidateContext(_options))
+            {
+                return context.Candidates
+                .Where(c => c.IdCandidate == idCandidate)
+                .FirstOrDefault();
+            }
+        }
+
+        public List<Candidates> GetAllCandidates()
+        {  
+            using (var context = new CandidateContext(_options))
+            {
+                //CONSULTAMOS TODOS LOS CANDIDATOS
+                return context.Candidates.ToList(); 
+            } 
+        }
+
+        public Candidateexperiences? GetCandidateExperiencesById(int idExp)
+        {
+            using (var context = new CandidateContext(_options))
+            {
+                return context.Candidateexperiences
+                .Where(c => c.IdCandidateExperience == idExp)
+                .FirstOrDefault();
+            }
+        }
+
+        public List<Candidateexperiences> GetAllCandidateExperiencesByIdCandidate(int idCandidate)
+        {
+            using (var context = new CandidateContext(_options))
+            {
+                return context.Candidateexperiences
+                .Where(c => c.IdCandidate == idCandidate)
+                .ToList();
+            }
+        }
+
+        public int RegisterCandidate(Candidates model, List<Candidateexperiences> exp) 
+        {
+            int Response = 0;
+
             using (var context = new CandidateContext(_options))
             {
                 var newCandidate = new Candidates
@@ -39,8 +80,11 @@ namespace DataAccess.Data
 
 
                 //VALIDAMOS QUE SE INSERTO EL CANDIDATO
-                if (newCandidate.IdCandidate > 0) 
-                {               
+                if (newCandidate.IdCandidate > 0 && exp.Count() > 0)
+                {
+                    //SETEAMOS EL ID DEL CANDIDATO PARA RETORNAR
+                    Response = newCandidate.IdCandidate;
+
                     //Agregamos las experiencias
                     foreach (var item in exp)
                     { 
@@ -63,6 +107,8 @@ namespace DataAccess.Data
                     }                   
                 }
             }
+
+            return Response;
         }        
     }
 }

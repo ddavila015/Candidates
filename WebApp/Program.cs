@@ -3,6 +3,7 @@ using DataAccess.Data;
 using DataAccess.DataInterface;
 using Domain;
 using Domain.DomainInterface;
+using DTO;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 //DEPENDENCIAS
 builder.Services.AddScoped<ICandidateData, CandidateData>();
 builder.Services.AddScoped<ICandidateDomain, CandidateDomain>();
+builder.Services.AddScoped<ResponseDto>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

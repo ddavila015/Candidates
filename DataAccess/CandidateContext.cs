@@ -21,7 +21,7 @@ namespace DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //clave alternativa única
+            //clave alternativa única para Email del Candidato
             modelBuilder.Entity<Candidates>()
                 .HasIndex(c => c.Email)
                 .IsUnique();

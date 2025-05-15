@@ -1,4 +1,5 @@
 ﻿using DataAccess.Entities;
+using DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Domain.DomainInterface
 {
     public interface ICandidateDomain
     {
-        void RegisterCandidate(Candidates model, List<Candidateexperiences> exp);
+        ResponseDto RegisterCandidate(Candidates model, List<Candidateexperiences> exp);
+
+        List<CandidateDto> GetAllCandidates();
     }
 }
