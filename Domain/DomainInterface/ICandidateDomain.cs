@@ -10,7 +10,7 @@ namespace Domain.DomainInterface
 {
     public interface ICandidateDomain
     {
-        ResponseDto RegisterCandidate(Candidates model, List<Candidateexperiences> exp);
+        ResponseDto RegisterCandidate(CandidateDto model);
 
         List<CandidateDto> GetAllCandidates();
 

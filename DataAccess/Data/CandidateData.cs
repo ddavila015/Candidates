@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataInterface;
 using DataAccess.Entities;
+using DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
@@ -146,21 +147,9 @@ namespace DataAccess.Data
             //Agregamos las experiencias
             foreach (var item in exp)
             {
-                var newExperiences = new Candidateexperiences
-                {
-                    Company = item.Company,
-                    Job = item.Job,
-                    Description = item.Description,
-                    Salary = item.Salary,
-                    BeginDate = item.BeginDate,
-                    EndDate = item.EndDate,
-                    InsertDate = DateTime.Now,
-                    ModifyDate = DateTime.Now,
-                    IdCandidate = IdCandidate
-                };
-
                 // GUARDAMOS LAS EXPERIENCIAS
-                context.Candidateexperiences.Add(newExperiences);
+                item.IdCandidate = IdCandidate;
+                context.Candidateexperiences.Add(item);
                 context.SaveChanges();
             }             
         }

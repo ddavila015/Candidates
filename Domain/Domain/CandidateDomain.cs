@@ -26,7 +26,7 @@ namespace Domain
             _ListCandidateDto = listCandidateDto;
         }
 
-       public ResponseDto RegisterCandidate(Candidates model, List<Candidateexperiences> exp)
+       public ResponseDto RegisterCandidate(CandidateDto model)
        {
             //VALIDAMOS QUE EL E-MAIL ESTE REGISTRADO
             var result = _candidateData.ValidateRegisteredEmail(model.Email);
@@ -49,8 +49,24 @@ namespace Domain
                 ModifyDate = DateTime.Now
             };
 
+            //SETEAMOS LAS EXPERIENCIAS
+            List<Candidateexperiences> Listexp = new List<Candidateexperiences>();           
+            foreach (var item in model.Experiencias)
+            {
+                Listexp.Add(new Candidateexperiences {
+                    Company = item.Company,
+                    Job = item.Job,
+                    Description = item.Description,
+                    Salary = item.Salary,
+                    BeginDate = item.BeginDate,
+                    EndDate = item.EndDate,
+                    InsertDate = DateTime.Now,
+                    ModifyDate = DateTime.Now                    
+                }); 
+            }
+
             //REGISTRAMOS EL CANDIDATO
-            var response = _candidateData.RegisterCandidate(newCandidate, exp);
+            var response = _candidateData.RegisterCandidate(newCandidate, Listexp);
             if (response > 0)
             {
                 _ResponseDto.Mensaje = "REGISTRADO EXITOSAMENTE.";

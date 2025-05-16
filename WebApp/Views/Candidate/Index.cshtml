@@ -18,8 +18,8 @@
     }
 
     <div class="text-center">
-        <h1 class="display-4">WELCOME</h1>
-        <p>Administrar base de datos de candidatos</p>
+        <h1 class="display-4">CANDIDATOS</h1>
+        <p>Administrar base de datos</p>
     </div>
 
 
@@ -75,19 +75,19 @@
                             <td colspan="6">
                                 <table class="table table-bordered table-warning table-sm">
                                     <thead class="table-warning">
-                                        <tr>
+                                        <tr>                                           
                                             <th>Compañia</th>
                                             <th>Puesto</th>
                                             <th>Descripción</th>
                                             <th>Salario</th>
                                             <th>FechaInicio</th>
-                                            <th>FechaFin</th>                                     
+                                            <th>FechaFin</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var exp in @candidate.Experiencias)
                                         {
-                                            <tr>
+                                            <tr>                                               
                                                 <td>@exp.Company</td>
                                                 <td>@exp.Job</td>
                                                 <td>@exp.Description</td>

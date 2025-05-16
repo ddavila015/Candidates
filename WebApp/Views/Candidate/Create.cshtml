@@ -1,0 +1,158 @@
+﻿ @model DTO.CandidateDto
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid">   
+    @if (ViewBag.Codigo == 200)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+    @if (ViewBag.Codigo == 0)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+
+    <div class="text-center">
+        <h3 class="">REGISTRAR CANDIDATO</h3>       
+    </div>
+    
+
+    @using (Html.BeginForm("Create", "Candidate", FormMethod.Post, new { Id = "FormCandidate" }))
+    {
+        <div class="container" style="width:100%; background-color: #f3f3f3;">
+
+            <div class="container" style="width:30%;">
+                <br />
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Nombre</label>
+                    @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", maxlength = "50", required = "required" })
+                </div> 
+            
+                <div class="mb-3">
+                    <label for="Surname" class="form-label">Apellido</label>
+                    @Html.TextBoxFor(Model => Model.Surname, new { @class = "form-control", maxlength = "150", required = "required" })
+                </div> 
+
+                <div class="mb-3">
+                    <label for="Birthdate" class="form-label">Fecha de Nacimiento</label>
+                    @Html.TextBoxFor(Model => Model.Birthdate, new { @class = "form-control", type = "date", required = "required" })
+                </div> 
+
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", type = "email", required = "required" })
+                </div>
+                <br />
+            </div>
+
+            <div class="container" style="width:100%;">
+                <hr />
+                <!-- AGREGAR EXPERIENCIAS -->
+                <h5>Experiencia Laboral</h5>
+                <div id="experience-container">
+                    @for (int i = 0; i < Model.Experiencias.Count; i++)
+                    {
+                        <div class="d-flex gap-3 align-items-center border p-2 rounded">
+                            <div>
+                                <label class="form-label">Empresa</label>
+                                @Html.TextBoxFor(m => m.Experiencias[i].Company, new { @class = "form-control", required = "required", maxlength = "100" })
+                            </div>
+
+                            <div>
+                                <label class="form-label">Puesto</label>
+                                @Html.TextBoxFor(m => m.Experiencias[i].Job, new { @class = "form-control", required = "required", maxlength = "100" })
+                            </div>
+
+                            <div>
+                                <label class="form-label">Descripción</label>
+                                @Html.TextBoxFor(m => m.Experiencias[i].Description, new { @class = "form-control", required = "required", maxlength = "4000" })
+                            </div>
+
+                            <div>
+                                <label class="form-label">Salario</label>
+                                @Html.TextBoxFor(m => m.Experiencias[i].Salary, new { @class = "form-control", required = "required" })
+                            </div>
+
+                            <div>
+                                <label class="form-label">Fecha Inicio</label>
+                                @Html.TextBoxFor(m => m.Experiencias[i].BeginDate, new { @class = "form-control", type = "date", required = "required" })
+                            </div>
+
+                            <div>
+                                <label class="form-label">Fecha Fin</label>
+                                @Html.TextBoxFor(m => m.Experiencias[i].EndDate, new { @class = "form-control", type = "date" })
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!--AGREGAR REGISTRO EXPERIENCIA -->
+                <button type="button" class="btn btn-success" onclick="addExperience()">Agregar Experiencia</button>
+
+                <div class="text-center mb-1">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="reset" class="btn btn-secondary">Limpiar</button>
+                </div>
+                <br />
+            </div>
+        </div>
+    }
+ </div>
+
+<script>
+         function addExperience() {
+        var container = document.getElementById("experience-container");
+        var index = container.children.length;
+
+        var newExperience = document.createElement("div");
+        newExperience.classList.add("d-flex", "gap-3", "align-items-center", "border", "p-2", "rounded", "mb-2");
+        newExperience.innerHTML = `
+            <div>
+                <label class="form-label">Empresa</label>
+                <input type="text" name="Experiencias[${index}].Company" class="form-control" required maxlength="100" />
+            </div>
+
+            <div>
+                <label class="form-label">Puesto</label>
+                <input type="text" name="Experiencias[${index}].Job" class="form-control" required maxlength="100" />
+            </div>
+
+            <div>
+                <label class="form-label">Descripción</label>
+                <input type="text" name="Experiencias[${index}].Description" class="form-control" required maxlength="4000" />
+            </div>
+
+            <div>
+                <label class="form-label">Salario</label>
+                <input type="number" name="Experiencias[${index}].Salary" class="form-control" required />
+            </div>
+
+            <div>
+                <label class="form-label">Fecha Inicio</label>
+                <input type="date" name="Experiencias[${index}].BeginDate" class="form-control" required />
+            </div>
+
+            <div>
+                <label class="form-label">Fecha Fin</label>
+                <input type="date" name="Experiencias[${index}].EndDate" class="form-control" />
+            </div>
+
+            <button type="button" class="btn btn-danger btn-sm mt-4" onclick="removeExperience(this)">X</button>
+        `;
+
+        container.appendChild(newExperience);
+    }
+
+        function removeExperience(button) {
+        button.parentElement.remove();
+    }
+
+
+</script>
