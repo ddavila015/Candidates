@@ -54,26 +54,27 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", new { Mensaje = response.Mensaje, Codigo = response.Codigo });            
         }
          
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            var newCandidate = new Candidates { Name = "Juan", Surname = "Pérez", Birthdate = new DateTime(1990, 5, 20), Email = "perez32@email.com", InsertDate = DateTime.Now, ModifyDate = DateTime.Now };
+            //CONSULTAMOS EL CANDIDATO
+            CandidateEditDto _Candidate = _CandidateDomain.GetCandidateById(id);
 
-            List<Candidateexperiences> exp = new List<Candidateexperiences>();
-            var candidateexperiences = new Candidateexperiences
-            {
-                Company = "Tech Solutions",
-                Job = "Software Engineer",
-                Description = "Desarrollo de aplicaciones web",
-                Salary = 5000,
-                BeginDate = Convert.ToDateTime("2022-01-15T00:00:00"),
-                EndDate = Convert.ToDateTime("2023-01-15T00:00:00")
-            };
+            //VALIDAMOS SI TIENE EXPERIENCIAS
+            if(_Candidate.Experiencias.Count() <= 0)
+                EditCandidateAddBlankExperience(_Candidate);
 
-            exp.Add(candidateexperiences);
+            ViewBag.Mensaje = null;
+            ViewBag.Codigo = null;
+            return View(_Candidate);
+        }
 
-
-            var response = _CandidateDomain.EditCandidate(newCandidate, exp);
-            return View();
+        [HttpPost]
+        public IActionResult Edit(CandidateEditDto model)
+        { 
+            var response = _CandidateDomain.EditCandidate(model);
+            ViewBag.Mensaje = response.Mensaje;
+            ViewBag.Codigo = response.Codigo;
+            return View(model);
         }
 
 
@@ -87,6 +88,13 @@ namespace WebApp.Controllers
         {
             List<CandidateexperiencesDto> exp = new List<CandidateexperiencesDto>();
             exp.Add(new CandidateexperiencesDto { });            
+            model.Experiencias = exp;
+        }
+
+        public void EditCandidateAddBlankExperience(CandidateEditDto model)
+        {
+            List<CandidateExperiencesEditDto> exp = new List<CandidateExperiencesEditDto>();
+            exp.Add(new CandidateExperiencesEditDto { });
             model.Experiencias = exp;
         }
     }

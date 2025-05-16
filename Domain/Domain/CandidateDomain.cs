@@ -13,21 +13,16 @@ namespace Domain
 {
     public class CandidateDomain : ICandidateDomain
     {
-        private readonly ICandidateData _candidateData;
-        private readonly ResponseDto _ResponseDto;
-        private readonly List<CandidateDto> _ListCandidateDto;
-        
-
-
-        public CandidateDomain(ICandidateData candidateData, ResponseDto responseDto, List<CandidateDto> listCandidateDto) 
+        private readonly ICandidateData _candidateData;         
+         
+        public CandidateDomain(ICandidateData candidateData) 
         {
-            _candidateData = candidateData;
-            _ResponseDto = responseDto;
-            _ListCandidateDto = listCandidateDto;
+            _candidateData = candidateData;            
         }
 
        public ResponseDto RegisterCandidate(CandidateDto model)
        {
+            ResponseDto _ResponseDto = new ResponseDto();
             //VALIDAMOS QUE EL E-MAIL ESTE REGISTRADO
             var result = _candidateData.ValidateRegisteredEmail(model.Email);
             if (result)
@@ -82,7 +77,8 @@ namespace Domain
        }
 
         public ResponseDto DeleteCandidate(int idCandidate)
-        {           
+        {
+            ResponseDto _ResponseDto = new ResponseDto();
             var response = _candidateData.DeleteCandidate(idCandidate);
             if (response == true)
             {
@@ -99,7 +95,8 @@ namespace Domain
         }
 
        public List<CandidateDto> GetAllCandidates()
-       { 
+       {
+            List<CandidateDto> listCandidateDtos = new List<CandidateDto>();    
             //CONSULTAR TODOS LOS CANDIDATOS
             var _candidates = _candidateData.GetAllCandidates();              
             foreach (var itemCandidate in _candidates)
@@ -141,14 +138,16 @@ namespace Domain
                 };
 
                 //AGREGAMOS LOS CANDIDATOS
-                _ListCandidateDto.Add(NewCandidate);
+                listCandidateDtos.Add(NewCandidate);
             }
         
-            return _ListCandidateDto;
+            return listCandidateDtos;
        }
 
-        public ResponseDto EditCandidate(Candidates model, List<Candidateexperiences> exp)
+        public ResponseDto EditCandidate(CandidateEditDto model)
         {
+            ResponseDto _ResponseDto = new ResponseDto();
+
             //CONSULTAR SI EXISTE EL CANDIDATO
             var candidate = _candidateData.GetCandidateById(model.IdCandidate);
             if (candidate == null)
@@ -173,9 +172,27 @@ namespace Domain
             //SETEAMOS EL OBJECTO CANDIDATO
             candidate.Name = model.Name;
             candidate.Surname = model.Surname;
-            candidate.Birthdate = model.Birthdate;
+            candidate.Birthdate = Convert.ToDateTime(model.Birthdate);
             candidate.Email = model.Email;
             candidate.ModifyDate = DateTime.Now;
+
+            //SETEAMOS LAS EXPERIENCIAS
+            List<Candidateexperiences> exp = new List<Candidateexperiences>();
+            foreach (var item in model.Experiencias)
+            {
+                exp.Add(new Candidateexperiences
+                {
+                    IdCandidateExperience = item.IdCandidateExperience,
+                    Company = item.Company,
+                    Job = item.Job,
+                    Description = item.Description,
+                    Salary = item.Salary,
+                    BeginDate = Convert.ToDateTime(item.BeginDate),
+                    EndDate = string.IsNullOrWhiteSpace(item.EndDate) ? null : Convert.ToDateTime(item.EndDate),
+                    InsertDate = DateTime.Now,
+                    ModifyDate = DateTime.Now
+                });
+            }
 
             //REGISTRAMOS EL CANDIDATO
             var response = _candidateData.EditCandidate(candidate, exp);
@@ -191,6 +208,52 @@ namespace Domain
             }
 
             return _ResponseDto;
+        }
+
+        public CandidateEditDto GetCandidateById(int idCandidate)
+        {
+            CandidateEditDto _CandidateDto = new CandidateEditDto(); 
+
+            if (idCandidate <= 0)
+                return _CandidateDto;
+
+            //CONSULTAMOS EL CANDIDATO
+            var _candidates = _candidateData.GetCandidateById(idCandidate);
+
+            if (_candidates != null)
+            {
+                //CONSULTAMOS TODAS LAS EXPERIENCIAS
+                List<CandidateExperiencesEditDto> ListExperiences = new List<CandidateExperiencesEditDto>();
+                var _experiences = _candidateData.GetAllCandidateExperiencesByIdCandidate(idCandidate);
+                foreach (var itemExp in _experiences)
+                {
+                    //CREAMOS UN OBJECTO PARA LAS EXPERIENCIAS
+                    var NewExperience = new CandidateExperiencesEditDto
+                    {
+                        IdCandidateExperience = itemExp.IdCandidateExperience,
+                        Company = itemExp.Company,
+                        Job = itemExp.Job,
+                        Description = itemExp.Description,
+                        Salary = itemExp.Salary,
+                        BeginDate = itemExp.BeginDate.ToString("yyyy-MM-dd"),
+                        EndDate = itemExp.EndDate == null ? "" : Convert.ToDateTime(itemExp.EndDate).ToString("yyyy-MM-dd"),
+                        InsertDate = itemExp.InsertDate,
+                        ModifyDate = itemExp.ModifyDate
+                    };
+
+                    ListExperiences.Add(NewExperience);
+                }
+
+                //SETEAMOS LAS EXPERIENCIAS
+                _CandidateDto.Experiencias = ListExperiences;
+                _CandidateDto.IdCandidate = _candidates.IdCandidate;
+                _CandidateDto.Name = _candidates.Name;
+                _CandidateDto.Surname = _candidates.Surname;
+                _CandidateDto.Birthdate = _candidates.Birthdate.ToString("yyyy-MM-dd");
+                _CandidateDto.Email = _candidates.Email;      
+            }
+
+            return _CandidateDto;
         }
     }
 }

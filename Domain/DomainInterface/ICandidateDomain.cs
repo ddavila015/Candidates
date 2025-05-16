@@ -16,6 +16,8 @@ namespace Domain.DomainInterface
 
         ResponseDto DeleteCandidate(int idCandidate);
 
-        ResponseDto EditCandidate(Candidates model, List<Candidateexperiences> exp);
+        ResponseDto EditCandidate(CandidateEditDto model);
+
+        CandidateEditDto GetCandidateById(int idCandidate);
     }
 }

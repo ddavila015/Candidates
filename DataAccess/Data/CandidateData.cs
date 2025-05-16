@@ -117,28 +117,34 @@ namespace DataAccess.Data
                         var _experience = GetCandidateExperiencesById(item.IdCandidateExperience);
                         if (_experience != null)
                         {
-                            //SETEAMOS LOS PARAMETROS
-                            _experience.Company = item.Company;
-                            _experience.Job = item.Job;
-                            _experience.Description = item.Description;
-                            _experience.Salary = item.Salary;
-                            _experience.BeginDate = item.BeginDate;
-                            _experience.EndDate = item.EndDate;
-                            _experience.ModifyDate = DateTime.Now;
+                            context.Candidateexperiences.Remove(_experience);
+                            context.SaveChanges();
 
-                            // ACTUALIZAMOS LA EXPERIENCIA
-                            context.Candidateexperiences.Update(_experience);
-                            context.SaveChanges();                            
+                            //SETEAMOS LOS PARAMETROS
+                            //_experience.Company = item.Company;
+                            //_experience.Job = item.Job;
+                            //_experience.Description = item.Description;
+                            //_experience.Salary = item.Salary;
+                            //_experience.BeginDate = item.BeginDate;
+                            //_experience.EndDate = item.EndDate;
+                            //_experience.ModifyDate = DateTime.Now;
+
+                            //// ACTUALIZAMOS LA EXPERIENCIA
+                            //context.Candidateexperiences.Update(_experience);
+                            //context.SaveChanges();                            
                         }
                     }
-                    else 
-                    {
-                        //GUARDAMOS LA NUEVA EXPERIENCIA
-                        List<Candidateexperiences> SaveExp = new List<Candidateexperiences>();
-                        SaveExp.Add(item);                    
-                        SaveCandidateExperiences(item.IdCandidate, SaveExp);
-                    }              
+                    //else 
+                    //{
+                    //    //GUARDAMOS LA NUEVA EXPERIENCIA
+                    //    List<Candidateexperiences> SaveExp = new List<Candidateexperiences>();
+                    //    SaveExp.Add(item);                    
+                    //    SaveCandidateExperiences(item.IdCandidate, SaveExp);
+                    //}              
                 }
+
+                //GUARDAR TODAS LAS EXPERIENCIAS
+                SaveCandidateExperiences(IdCandidate, exp);
             }
         }
 
@@ -148,6 +154,7 @@ namespace DataAccess.Data
             foreach (var item in exp)
             {
                 // GUARDAMOS LAS EXPERIENCIAS
+                item.IdCandidateExperience = 0;
                 item.IdCandidate = IdCandidate;
                 context.Candidateexperiences.Add(item);
                 context.SaveChanges();
