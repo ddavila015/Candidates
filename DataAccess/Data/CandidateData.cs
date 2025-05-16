@@ -118,29 +118,9 @@ namespace DataAccess.Data
                         if (_experience != null)
                         {
                             context.Candidateexperiences.Remove(_experience);
-                            context.SaveChanges();
-
-                            //SETEAMOS LOS PARAMETROS
-                            //_experience.Company = item.Company;
-                            //_experience.Job = item.Job;
-                            //_experience.Description = item.Description;
-                            //_experience.Salary = item.Salary;
-                            //_experience.BeginDate = item.BeginDate;
-                            //_experience.EndDate = item.EndDate;
-                            //_experience.ModifyDate = DateTime.Now;
-
-                            //// ACTUALIZAMOS LA EXPERIENCIA
-                            //context.Candidateexperiences.Update(_experience);
-                            //context.SaveChanges();                            
+                            context.SaveChanges(); 
                         }
-                    }
-                    //else 
-                    //{
-                    //    //GUARDAMOS LA NUEVA EXPERIENCIA
-                    //    List<Candidateexperiences> SaveExp = new List<Candidateexperiences>();
-                    //    SaveExp.Add(item);                    
-                    //    SaveCandidateExperiences(item.IdCandidate, SaveExp);
-                    //}              
+                    } 
                 }
 
                 //GUARDAR TODAS LAS EXPERIENCIAS
