@@ -23,11 +23,11 @@ builder.Services.AddDbContext<CandidateContext>(options =>
 var app = builder.Build();
 
 //DESCOMENTAR ANTES DE ENVIAR
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dataContext = scope.ServiceProvider.GetRequiredService<CandidateContext>();
-//    dataContext.Database.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<CandidateContext>();
+    dataContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
