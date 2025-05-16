@@ -93,7 +93,15 @@
                                                 <td>@exp.Description</td>
                                                 <td>@exp.Salary</td>
                                                 <td>@exp.BeginDate.ToString("dd/MM/yyyy")</td>
-                                                <td>@exp.EndDate.ToString("dd/MM/yyyy")</td>
+                                                @if (@exp.EndDate == null)
+                                                {
+                                                    <td></td>
+                                                }
+                                                else                                                
+                                                {
+                                                    <td>@exp.EndDate.ToString("dd/MM/yyyy")</td>
+                                                }
+                                               
                                             </tr>
                                         }
                                     </tbody>

@@ -45,19 +45,23 @@ namespace Domain
             };
 
             //SETEAMOS LAS EXPERIENCIAS
-            List<Candidateexperiences> Listexp = new List<Candidateexperiences>();           
-            foreach (var item in model.Experiencias)
+            List<Candidateexperiences> Listexp = new List<Candidateexperiences>();
+            if (model.Experiencias != null)
             {
-                Listexp.Add(new Candidateexperiences {
-                    Company = item.Company,
-                    Job = item.Job,
-                    Description = item.Description,
-                    Salary = item.Salary,
-                    BeginDate = item.BeginDate,
-                    EndDate = item.EndDate,
-                    InsertDate = DateTime.Now,
-                    ModifyDate = DateTime.Now                    
-                }); 
+                foreach (var item in model.Experiencias)
+                {
+                    Listexp.Add(new Candidateexperiences
+                    {
+                        Company = item.Company,
+                        Job = item.Job,
+                        Description = item.Description,
+                        Salary = item.Salary,
+                        BeginDate = item.BeginDate,
+                        EndDate = item.EndDate,
+                        InsertDate = DateTime.Now,
+                        ModifyDate = DateTime.Now
+                    });
+                }
             }
 
             //REGISTRAMOS EL CANDIDATO
@@ -178,20 +182,23 @@ namespace Domain
 
             //SETEAMOS LAS EXPERIENCIAS
             List<Candidateexperiences> exp = new List<Candidateexperiences>();
-            foreach (var item in model.Experiencias)
-            {
-                exp.Add(new Candidateexperiences
+            if (model.Experiencias != null) 
+            { 
+                foreach (var item in model.Experiencias)
                 {
-                    IdCandidateExperience = item.IdCandidateExperience,
-                    Company = item.Company,
-                    Job = item.Job,
-                    Description = item.Description,
-                    Salary = item.Salary,
-                    BeginDate = Convert.ToDateTime(item.BeginDate),
-                    EndDate = string.IsNullOrWhiteSpace(item.EndDate) ? null : Convert.ToDateTime(item.EndDate),
-                    InsertDate = DateTime.Now,
-                    ModifyDate = DateTime.Now
-                });
+                    exp.Add(new Candidateexperiences
+                    {
+                        IdCandidateExperience = item.IdCandidateExperience,
+                        Company = item.Company,
+                        Job = item.Job,
+                        Description = item.Description,
+                        Salary = item.Salary,
+                        BeginDate = Convert.ToDateTime(item.BeginDate),
+                        EndDate = string.IsNullOrWhiteSpace(item.EndDate) ? null : Convert.ToDateTime(item.EndDate),
+                        InsertDate = DateTime.Now,
+                        ModifyDate = DateTime.Now
+                    });
+                }
             }
 
             //REGISTRAMOS EL CANDIDATO

@@ -106,23 +106,17 @@ namespace DataAccess.Data
 
         public void EditCandidateExperiences(int IdCandidate, List<Candidateexperiences> exp) 
         {
-            if (IdCandidate > 0 && exp.Count() > 0)
-            {    
-                //EDITAMOS LAS EXPERIENCIAS
-                foreach (var item in exp)
-                {
-                    //VALIDAMOS QUE EXISTA LA EXPERIENCIA
-                    if (item.IdCandidateExperience > 0)
-                    {
-                        var _experience = GetCandidateExperiencesById(item.IdCandidateExperience);
-                        if (_experience != null)
-                        {
-                            context.Candidateexperiences.Remove(_experience);
-                            context.SaveChanges(); 
-                        }
-                    } 
-                }
+            //CONSULTAR TODAS LA EXPERIENCIAS
+            var _experiencias = GetAllCandidateExperiencesByIdCandidate(IdCandidate);
+            //EDITAMOS LAS EXPERIENCIAS
+            foreach (var item in _experiencias)
+            {
+                context.Candidateexperiences.Remove(item);
+                context.SaveChanges();
+            }
 
+            if (IdCandidate > 0 && exp.Count() > 0)
+            {               
                 //GUARDAR TODAS LAS EXPERIENCIAS
                 SaveCandidateExperiences(IdCandidate, exp);
             }

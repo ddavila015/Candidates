@@ -64,7 +64,7 @@
                 <div id="experience-container">
                     @for (int i = 0; i < Model.Experiencias.Count; i++)
                     {
-                        <div class="d-flex gap-3 align-items-center border p-2 rounded">
+                        <div class="d-flex gap-3 align-items-center border p-2 rounded" id="experience-@i">
                             <div style="display:none;">
                                 <label class="form-label">Id</label>
                                 @Html.TextBoxFor(m => m.Experiencias[i].IdCandidateExperience, new { @class = "form-control", required = "required" })
@@ -99,6 +99,9 @@
                                 <label class="form-label">Fecha Fin</label>
                                 @Html.TextBoxFor(m => m.Experiencias[i].EndDate, new { @class = "form-control", type = "date" })
                             </div>
+
+                            <!-- Botón para eliminar esta experiencia -->
+                            <button type="button" class="btn btn-danger btn-sm mt-4" onclick="removeExperienceRazor(@i)">X</button>
                         </div>
                     }
                 </div>
@@ -117,7 +120,7 @@
  </div>
 
 <script>
-         function addExperience() {
+    function addExperience() {
         var container = document.getElementById("experience-container");
         var index = container.children.length;
 
@@ -160,8 +163,34 @@
         container.appendChild(newExperience);
     }
 
-        function removeExperience(button) {
+    function removeExperience(button) {
         button.parentElement.remove();
+         reindexExperiences();
+    }
+
+    function removeExperienceRazor(index) {
+        var experienceElement = document.getElementById("experience-" + index);
+        if (experienceElement) {
+            experienceElement.remove();
+        }
+         reindexExperiences();
+    }
+
+        function reindexExperiences() {
+        var container = document.getElementById("experience-container");
+        var experiences = container.children;
+
+        for (var i = 0; i < experiences.length; i++) {
+            var inputs = experiences[i].querySelectorAll("input");
+
+            inputs.forEach(input => {
+                var name = input.getAttribute("name");
+                if (name) {
+                    var newName = name.replace(/\[\d+\]/, "[" + i + "]");
+                    input.setAttribute("name", newName);
+                }
+            });
+        }
     }
 
 
